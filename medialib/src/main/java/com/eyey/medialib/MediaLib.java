@@ -1,15 +1,17 @@
 package com.eyey.medialib;
 
 /**
- * Created on 2018/10/24.
+ * Created on 2018/11/14.
  *
  * @author zhengliao
  */
-public class NativeTest {
+public class MediaLib {
     static {
-        System.loadLibrary("native-lib");
+        System.loadLibrary("media-lib");
     }
 
+
+    public static native  void openAVFile(String path);
     public static native String stringFromJNI();
     public static native boolean open(String url,Object handle);
 }
