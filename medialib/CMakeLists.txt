@@ -26,6 +26,9 @@ set_target_properties(avformat PROPERTIES IMPORTED_LOCATION ${FF_DIR}/libavforma
 add_library(avutil SHARED IMPORTED)
 set_target_properties(avutil PROPERTIES IMPORTED_LOCATION ${FF_DIR}/libavutil.so)
 
+add_library(swresample SHARED IMPORTED)
+set_target_properties(swresample PROPERTIES IMPORTED_LOCATION ${FF_DIR}/libswresample.so)
+
 
 add_library( # Sets the name of the library.
              media-lib
@@ -35,7 +38,14 @@ add_library( # Sets the name of the library.
              SHARED
 
              # Provides a relative path to your source file(s).
-             src/main/cpp/media-lib.cpp )
+             src/main/cpp/ELog.cpp
+             src/main/cpp/media-lib.cpp
+             src/main/cpp/EDemux.cpp
+             src/main/cpp/FFDemux.cpp
+             src/main/cpp/XData.cpp
+             src/main/cpp/EThread.cpp
+             src/main/cpp/FFMpegPredef.h
+             )
 
 
 
@@ -61,6 +71,9 @@ target_link_libraries(media-lib
                         avcodec
                         avformat
                         avutil
+                        swresample
+                        GLESv2 EGL OpenSLES
+                        android
                         ${log-lib})
 
 # Specifies libraries CMake should link to your target library. You
