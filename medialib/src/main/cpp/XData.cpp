@@ -3,7 +3,9 @@
 //
 
 #include "XData.h"
+extern "C" {
 #include <libavformat/avformat.h>
+}
 
 XData::XData() {
     this->data = 0;

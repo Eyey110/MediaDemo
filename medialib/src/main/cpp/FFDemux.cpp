@@ -6,9 +6,13 @@
 #include "ELog.h"
 
 extern "C" {
-#include <libavformat/avformat.h>
 #include <libavcodec/avcodec.h>
+#include <libavformat/avformat.h>
+#include <libavutil/error.h>
 }
+
+
+bool FFDemux::is_init = false;
 
 
 FFDemux::FFDemux() {
@@ -26,13 +30,13 @@ bool FFDemux::open(const char *url) {
     int suc = 0;
     char errorStr[1024] = {0};
     suc = avformat_open_input(&afc, url, 0, 0);
-    if (!suc) {
+    if (suc != 0) {
         av_strerror(suc, errorStr, sizeof(errorStr));
-        ELOGError("open %s failed", url);
+        ELOGError("open %s failed,reason is  %s", url, errorStr);
         return false;
     }
     suc = avformat_find_stream_info(afc, 0);
-    if (!suc) {
+    if (suc != 0) {
         av_strerror(suc, errorStr, sizeof(errorStr));
         ELOGError("find info %s failed", url);
         return false;
@@ -45,11 +49,24 @@ XData FFDemux::read() {
     AVPacket *avPacket = av_packet_alloc();
     int suc = av_read_frame(afc, avPacket);
     XData data;
-    if (!suc) {
+    if (suc != 0) {
         av_packet_free(&avPacket);
         return XData();
     }
     data.data = reinterpret_cast<unsigned char *>(avPacket);
     data.size = avPacket->size;
     return data;
+}
+
+DecoderParameter FFDemux::findVParameter() {
+    if (afc) {
+        return DecoderParameter();
+    }
+    int index = av_find_best_stream(afc, AVMEDIA_TYPE_VIDEO, -1, -1, 0, 0);
+    if (index == AVERROR_STREAM_NOT_FOUND) {
+        return DecoderParameter();
+    }
+    DecoderParameter parameter;
+    parameter.para = afc->streams[index]->codecpar;
+    return parameter;
 }

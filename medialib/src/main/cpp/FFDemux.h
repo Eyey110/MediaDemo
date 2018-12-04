@@ -6,24 +6,27 @@
 #define MEDIADEMO_FFDEMUX_H
 
 
-#include "EDemux.h"
+#include "interface/IDemux.h"
+#include "FFMpegPredef.h"
 
-class FFDemux : public EDemux {
+//准备写成一个单例，在构造函数中去注册各种解封装器，解码器
+class FFDemux : public IDemux {
 
-
+public:
+    //打开一个av文件
     virtual bool open(const char *url);
-
+    //读取一帧数据，后续需要送到解码器里解码，需要循环调用直到文件末尾
     virtual XData read();
+
+    virtual DecoderParameter findVParameter();
+
 
     FFDemux();
 
 private:
-    static bool is_init = true;
+    static bool is_init;
     AVFormatContext *afc = 0;
-
-
 };
-
 
 
 #endif //MEDIADEMO_FFDEMUX_H

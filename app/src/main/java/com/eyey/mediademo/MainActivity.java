@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
         findViewById(R.id.open_av_file).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MediaLib.openAVFile(testFilePath);
+                MediaLib.open(testFilePath,null);
             }
         });
     }

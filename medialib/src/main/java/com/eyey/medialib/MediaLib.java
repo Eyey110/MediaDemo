@@ -9,9 +9,5 @@ public class MediaLib {
     static {
         System.loadLibrary("media-lib");
     }
-
-
-    public static native  void openAVFile(String path);
-    public static native String stringFromJNI();
     public static native boolean open(String url,Object handle);
 }

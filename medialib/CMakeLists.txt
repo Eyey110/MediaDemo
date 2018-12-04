@@ -40,11 +40,19 @@ add_library( # Sets the name of the library.
              # Provides a relative path to your source file(s).
              src/main/cpp/ELog.cpp
              src/main/cpp/media-lib.cpp
-             src/main/cpp/EDemux.cpp
              src/main/cpp/FFDemux.cpp
              src/main/cpp/XData.cpp
              src/main/cpp/EThread.cpp
+             src/main/cpp/DecoderParameter.cpp
+             src/main/cpp/FFDecode.cpp
+
              src/main/cpp/FFMpegPredef.h
+
+
+             src/main/cpp/interface/IObserver.cpp
+             src/main/cpp/interface/IDemux.cpp
+             src/main/cpp/interface/IDecode.cpp
+
              )
 
 
@@ -68,12 +76,10 @@ find_library( # Sets the name of the path variable.
               log )
 
 target_link_libraries(media-lib
-                        avcodec
-                        avformat
-                        avutil
-                        swresample
-                        GLESv2 EGL OpenSLES
+                        GLESv2 EGL
                         android
+                        OpenSLES
+                        avcodec avformat avutil swresample
                         ${log-lib})
 
 # Specifies libraries CMake should link to your target library. You

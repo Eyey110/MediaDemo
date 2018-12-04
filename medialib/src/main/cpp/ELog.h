@@ -5,7 +5,8 @@
 #ifndef MEDIADEMO_ELOG_H
 #define MEDIADEMO_ELOG_H
 
-#include <libavcodec/avcodec.h>
+
+
 
 #define __ETAG "Eyey"
 
@@ -31,4 +32,3 @@
 #endif //MEDIADEMO_ELOG_H
 
 
-static int ffmpeg_lockmgr_callback(void **mutex, AVLockOp op);

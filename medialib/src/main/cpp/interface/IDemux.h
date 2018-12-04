@@ -6,22 +6,19 @@
 #define MEDIADEMO_EDEMUX_H
 
 
-#include "XData.h"
-#include "FFMpegPredef.h"
-#include "EThread.h"
+#include "../XData.h"
+#include "../EThread.h"
+#include "../DecoderParameter.h"
 
-class EDemux : EThread {
-
+class IDemux : public EThread {
+public:
     virtual bool open(const char *url) =0;
 
     virtual XData read() = 0;
 
+    virtual DecoderParameter findVParameter() = 0;
 
-protected:
     virtual void main();
-
-    EDemux();
-
 };
 
 

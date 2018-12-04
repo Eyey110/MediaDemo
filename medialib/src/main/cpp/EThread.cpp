@@ -5,6 +5,8 @@
 #include "EThread.h"
 #include <thread>
 #include "ELog.h"
+#include "unistd.h"
+
 
 using namespace std;
 
@@ -22,7 +24,7 @@ void EThread::interrupt() {
             ESleep(1);
             continue;
         } else {
-            ELOGInfo("thread interrupt");
+            ELOGInfo("thread interrupt success");
             return;
         }
     }
@@ -33,9 +35,9 @@ void EThread::interrupt() {
 
 void EThread::threadMain() {
     isRunning = true;
-    ELOGInfo("thread enter,pid=%d",this_thread::get_id().id());
+    ELOGInfo("thread enter,pid=%d", getpid());
     main();
-    ELOGInfo("thread exit,pid=%d",this_thread::get_id().id());
+    ELOGInfo("thread exit,pid=%d", getpid());
     isRunning = false;
 }
 

@@ -2,11 +2,11 @@
 // Created by eyey on 2018/11/28.
 //
 
-#include "EDemux.h"
+#include "IDemux.h"
 
-void EDemux::main() {
+void IDemux::main() {
     while (!isExit) {
         XData d = read();
-        if (d.size <= 0)break;
+//        if (d.size <= 0)break;
     }
 }

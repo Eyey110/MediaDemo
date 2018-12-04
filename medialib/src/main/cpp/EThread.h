@@ -5,17 +5,18 @@
 #ifndef MEDIADEMO_ETHREAD_H
 #define MEDIADEMO_ETHREAD_H
 
-
 void ESleep(int mis);
 
 class EThread {
 public:
+    //开启这个线程
     virtual void start();
 
+    //尝试中断
     virtual void interrupt();
 
-
-    virtual void main() {}
+    //子类实现。执行的代码段
+    virtual void main() =0;
 
 protected:
     bool isExit = false;

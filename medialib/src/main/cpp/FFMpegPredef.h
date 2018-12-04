@@ -8,6 +8,7 @@
 
 struct AVFormatContext;
 struct AVCodecContext;
+struct AVCodecParameters;
 struct AVFrame;
 struct AVStream;
 struct AVPacket;
