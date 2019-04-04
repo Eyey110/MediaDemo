@@ -14,8 +14,13 @@ public:
     virtual bool open(DecoderParameter parameter);
 
 
+    virtual bool sendPackage(XData data);
+
+    virtual XData receiveFrame();
+
 protected:
-    AVCodecContext *context;
+    AVCodecContext *context = 0;
+    AVFrame *frame = 0;
 };
 
 

@@ -12,7 +12,7 @@ using namespace std;
 
 void EThread::start() {
     isExit = false;
-    thread th(&EThread::threadMain, this);
+    thread th(&EThread::threadMain,this);
     th.detach();
 }
 
@@ -35,9 +35,9 @@ void EThread::interrupt() {
 
 void EThread::threadMain() {
     isRunning = true;
-    ELOGInfo("thread enter,pid=%d", getpid());
+    ELOGInfo("thread enter,tid=%d", gettid());
     main();
-    ELOGInfo("thread exit,pid=%d", getpid());
+    ELOGInfo("thread exit,tid=%d", gettid());
     isRunning = false;
 }
 

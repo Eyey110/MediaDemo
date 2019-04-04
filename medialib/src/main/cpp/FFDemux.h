@@ -20,12 +20,15 @@ public:
 
     virtual DecoderParameter findVParameter();
 
+    virtual DecoderParameter findAParameter();
 
     FFDemux();
 
 private:
     static bool is_init;
     AVFormatContext *afc = 0;
+    int vStreamIndex = -1;
+    int aStreamIndex = -1;
 };
 
 

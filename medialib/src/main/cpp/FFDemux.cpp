@@ -4,6 +4,7 @@
 
 #include "FFDemux.h"
 #include "ELog.h"
+#include "interface/MediaType.h"
 
 extern "C" {
 #include <libavcodec/avcodec.h>
@@ -55,18 +56,40 @@ XData FFDemux::read() {
     }
     data.data = reinterpret_cast<unsigned char *>(avPacket);
     data.size = avPacket->size;
+    if (avPacket->stream_index == vStreamIndex) {
+        data.mediaType = MEDIA_TYPE_VIDEO;
+    } else if (avPacket->stream_index == aStreamIndex) {
+        data.mediaType = MEDIA_TYPE_AUDIO;
+    } else {
+        data.mediaType = MEDIA_TYPE_UNKNOWN;
+    }
     return data;
 }
 
 DecoderParameter FFDemux::findVParameter() {
-    if (afc) {
+    if (!afc) {
         return DecoderParameter();
     }
-    int index = av_find_best_stream(afc, AVMEDIA_TYPE_VIDEO, -1, -1, 0, 0);
-    if (index == AVERROR_STREAM_NOT_FOUND) {
+    vStreamIndex = av_find_best_stream(afc, AVMEDIA_TYPE_VIDEO, -1, -1, 0, 0);
+    if (vStreamIndex == AVERROR_STREAM_NOT_FOUND) {
+        return DecoderParameter();
+    }
+
+    DecoderParameter parameter;
+    parameter.para = afc->streams[vStreamIndex]->codecpar;
+    return parameter;
+}
+
+
+DecoderParameter FFDemux::findAParameter() {
+    if (!afc) {
+        return DecoderParameter();
+    }
+    aStreamIndex = av_find_best_stream(afc, AVMEDIA_TYPE_AUDIO, -1, -1, 0, 0);
+    if (aStreamIndex == AVERROR_STREAM_NOT_FOUND) {
         return DecoderParameter();
     }
     DecoderParameter parameter;
-    parameter.para = afc->streams[index]->codecpar;
+    parameter.para = afc->streams[aStreamIndex]->codecpar;
     return parameter;
 }

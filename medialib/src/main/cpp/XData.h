@@ -16,7 +16,7 @@ public:
 
     void drop();
 
-
+    int mediaType;
 };
 
 

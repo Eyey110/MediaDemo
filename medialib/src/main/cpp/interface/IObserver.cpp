@@ -4,7 +4,7 @@
 
 #include "IObserver.h"
 
-void IObserver::addObsever(IObserver *observer) {
+void IObserver::addObserver(IObserver *observer) {
     if (!observer)return;
     m_lock.lock();
     obsList.push_back(observer);
@@ -19,3 +19,7 @@ void IObserver::notifyObservers(XData data) {
     }
     m_lock.unlock();
 }
+
+
+
+

@@ -3,6 +3,8 @@
 //
 
 #include "FFDecode.h"
+#include "ELog.h"
+#include "interface/MediaType.h"
 
 extern "C" {
 #include <libavcodec/avcodec.h>
@@ -15,17 +17,63 @@ bool FFDecode::open(DecoderParameter parameter) {
     //查找解码器
     AVCodec *codec = avcodec_find_decoder(para->codec_id);
     if (!codec) {
+        ELOGError("find decoder failed");
         return false;
     }
+
     //创建解码器上下文
     context = avcodec_alloc_context3(codec);
     avcodec_parameters_to_context(context, para);
     //打开解码器
     int suc = avcodec_open2(context, 0, 0);
-    if (!suc) {
+    if (suc!=0) {
+        char buff[1024] = {0};
+        av_strerror(suc, buff, sizeof(buff) - 1);
+        ELOGError("%s", buff);
         return false;
     }
-
-
+    if (context->codec_type == AVMEDIA_TYPE_VIDEO) {
+        mediaType = MEDIA_TYPE_VIDEO;
+    } else if (context->codec_type == AVMEDIA_TYPE_AUDIO) {
+        mediaType = MEDIA_TYPE_AUDIO;
+    } else {
+        mediaType = MEDIA_TYPE_UNKNOWN;
+    }
+    ELOGInfo("find decoder success，type = %d", mediaType);
     return true;
 }
+
+bool FFDecode::sendPackage(XData data) {
+
+    if (data.size <= 0 || !data.data) {
+        return false;
+    }
+    if (!context) {
+        return false;
+    }
+    int re = avcodec_send_packet(context, reinterpret_cast<const AVPacket *>(data.data));
+    if (re != 0) {
+        return false;
+    }
+    return true;
+}
+
+XData FFDecode::receiveFrame() {
+    if (!context) {
+        return XData();
+    }
+    if (!frame) {
+        frame = av_frame_alloc();
+    }
+    int re = avcodec_receive_frame(context, frame);
+    XData d;
+    d.data = (unsigned char *) frame;
+    if (context->codec_type == AVMEDIA_TYPE_VIDEO) {
+        d.size = (frame->linesize[0] + frame->linesize[1] + frame->linesize[2]) * frame->height;
+    } else if (context->codec_type == AVMEDIA_TYPE_AUDIO) {
+        d.size = av_get_bytes_per_sample(static_cast<AVSampleFormat>(frame->format)) *
+                 frame->nb_samples * 2;
+    }
+    return d;
+}
+

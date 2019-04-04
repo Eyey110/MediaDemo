@@ -24,12 +24,7 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 100);
-        findViewById(R.id.open_av_file).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MediaLib.open(testFilePath,null);
-            }
-        });
+        findViewById(R.id.open_av_file).setOnClickListener(v -> MediaLib.open(testFilePath,null));
     }
 
 }

@@ -7,15 +7,16 @@
 
 
 #include "../XData.h"
+#include "../EThread.h"
 #include <vector>
 #include <mutex>
 
-class IObserver {
+class IObserver :public EThread{
 public:
     virtual void update(XData data) {
     }
 
-    virtual void addObsever(IObserver *observer);
+    virtual void addObserver(IObserver *observer);
 
 
     virtual void notifyObservers(XData data);

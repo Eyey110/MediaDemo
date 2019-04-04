@@ -49,9 +49,11 @@ add_library( # Sets the name of the library.
              src/main/cpp/FFMpegPredef.h
 
 
+
              src/main/cpp/interface/IObserver.cpp
              src/main/cpp/interface/IDemux.cpp
              src/main/cpp/interface/IDecode.cpp
+             src/main/cpp/interface/MediaType.h
 
              )
 

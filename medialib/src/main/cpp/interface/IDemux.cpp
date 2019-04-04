@@ -7,6 +7,7 @@
 void IDemux::main() {
     while (!isExit) {
         XData d = read();
-//        if (d.size <= 0)break;
+        if (d.size <=0)break;
+        notifyObservers(d);
     }
 }
