@@ -10,4 +10,6 @@ public class MediaLib {
         System.loadLibrary("media-lib");
     }
     public static native boolean open(String url,Object handle);
+
+    public  static native void initWindow(Object surface);
 }

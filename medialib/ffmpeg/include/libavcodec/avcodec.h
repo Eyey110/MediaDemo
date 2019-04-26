@@ -1184,7 +1184,7 @@ typedef struct RcOverride{
 #define CODEC_CAP_DR1             AV_CODEC_CAP_DR1
 #define CODEC_CAP_TRUNCATED       AV_CODEC_CAP_TRUNCATED
 #if FF_API_XVMC
-/* Codec can export data for HW decoding. This flag indicates that
+/* Codec can export frame for HW decoding. This flag indicates that
  * the codec would call get_format() with list that might contain HW accelerated
  * pixel formats (XvMC, VDPAU, VAAPI, etc). The application can pick any of them
  * including raw image format.
@@ -2530,7 +2530,7 @@ typedef struct AVCodecContext {
      */
     enum AVSampleFormat sample_fmt;  ///< sample format
 
-    /* The following data should not be initialized. */
+    /* The following frame should not be initialized. */
     /**
      * Number of samples per channel in an audio frame.
      *
@@ -2880,7 +2880,7 @@ typedef struct AVCodecContext {
      */
     /* The RTP callback: This function is called    */
     /* every time the encoder has a packet to send. */
-    /* It depends on the encoder if the data starts */
+    /* It depends on the encoder if the frame starts */
     /* with a Start Code (it should). H.263 does.   */
     /* mb_nb contains the number of macroblocks     */
     /* encoded in the RTP payload.                  */
@@ -5186,7 +5186,7 @@ typedef struct AVCodecParserContext {
     int64_t pts;     /* pts of the current frame */
     int64_t dts;     /* dts of the current frame */
 
-    /* private data */
+    /* private frame */
     int64_t last_pts;
     int64_t last_dts;
     int fetch_timestamp;

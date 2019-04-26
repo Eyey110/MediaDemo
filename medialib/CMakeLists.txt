@@ -45,8 +45,12 @@ add_library( # Sets the name of the library.
              src/main/cpp/EThread.cpp
              src/main/cpp/DecoderParameter.cpp
              src/main/cpp/FFDecode.cpp
-
              src/main/cpp/FFMpegPredef.h
+             src/main/cpp/GLVideoView.cpp
+             src/main/cpp/XEGL.cpp
+             src/main/cpp/XTexture.cpp
+             src/main/cpp/XShader.cpp
+             src/main/cpp/FFResample.cpp
 
 
 
@@ -54,8 +58,14 @@ add_library( # Sets the name of the library.
              src/main/cpp/interface/IDemux.cpp
              src/main/cpp/interface/IDecode.cpp
              src/main/cpp/interface/MediaType.h
+             src/main/cpp/interface/IVideoView.cpp
+             src/main/cpp/interface/IResample.cpp
 
-             )
+
+
+
+
+        )
 
 
 

@@ -43,6 +43,8 @@ bool FFDemux::open(const char *url) {
         return false;
     }
     ELOGDebug("open %s success", url);
+    findVParameter();
+    findAParameter();
     return true;
 }
 
@@ -54,7 +56,7 @@ XData FFDemux::read() {
         av_packet_free(&avPacket);
         return XData();
     }
-    data.data = reinterpret_cast<unsigned char *>(avPacket);
+    data.frame = reinterpret_cast<unsigned char *>(avPacket);
     data.size = avPacket->size;
     if (avPacket->stream_index == vStreamIndex) {
         data.mediaType = MEDIA_TYPE_VIDEO;

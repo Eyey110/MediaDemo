@@ -130,7 +130,7 @@ enum AVPixelFormat {
     AV_PIX_FMT_VAAPI = AV_PIX_FMT_VAAPI_VLD,
 #else
     /**
-     *  Hardware acceleration through VA-API, data[3] contains a
+     *  Hardware acceleration through VA-API, frame[3] contains a
      *  VASurfaceID.
      */
     AV_PIX_FMT_VAAPI,

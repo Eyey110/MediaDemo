@@ -23,7 +23,7 @@ void IDecode::main() {
         if (this->sendPackage(pack)) {
             while (!isExit) {
                 XData frame = receiveFrame();
-                if (!frame.data || frame.size == 0)break;
+                if (!frame.frame || frame.size == 0)break;
 //                ELOGInfo("receive frame size : %d", frame.size);
                 this->notifyObservers(frame);
                 ESleep(1);

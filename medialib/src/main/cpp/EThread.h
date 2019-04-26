@@ -16,7 +16,7 @@ public:
     virtual void interrupt();
 
     //子类实现。执行的代码段
-    virtual void main() =0;
+    virtual void main(){};
 
 protected:
     bool isExit = false;

@@ -45,13 +45,13 @@ bool FFDecode::open(DecoderParameter parameter) {
 
 bool FFDecode::sendPackage(XData data) {
 
-    if (data.size <= 0 || !data.data) {
+    if (data.size <= 0 || !data.frame) {
         return false;
     }
     if (!context) {
         return false;
     }
-    int re = avcodec_send_packet(context, reinterpret_cast<const AVPacket *>(data.data));
+    int re = avcodec_send_packet(context, reinterpret_cast<const AVPacket *>(data.frame));
     if (re != 0) {
         return false;
     }
@@ -67,13 +67,16 @@ XData FFDecode::receiveFrame() {
     }
     int re = avcodec_receive_frame(context, frame);
     XData d;
-    d.data = (unsigned char *) frame;
+    d.frame = (unsigned char *) frame;
     if (context->codec_type == AVMEDIA_TYPE_VIDEO) {
+        d.width = frame->width;
+        d.height = frame->height;
         d.size = (frame->linesize[0] + frame->linesize[1] + frame->linesize[2]) * frame->height;
     } else if (context->codec_type == AVMEDIA_TYPE_AUDIO) {
         d.size = av_get_bytes_per_sample(static_cast<AVSampleFormat>(frame->format)) *
                  frame->nb_samples * 2;
     }
+    memcpy(d.data,frame->data,sizeof(d.data));
     return d;
 }
 

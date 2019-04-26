@@ -10,8 +10,14 @@
 #include "EThread.h"
 #include "FFDecode.h"
 #include "interface/MediaType.h"
+#include <android/native_window_jni.h>
+#include "XEGL.h"
+#include "XShader.h"
+#include "interface/IVideoView.h"
+#include "GLVideoView.h"
 
 
+IVideoView *view = NULL;
 extern "C"
 JNIEXPORT jboolean JNICALL
 Java_com_eyey_medialib_MediaLib_open(JNIEnv *env, jclass type, jstring url_, jobject handle) {
@@ -24,16 +30,32 @@ Java_com_eyey_medialib_MediaLib_open(JNIEnv *env, jclass type, jstring url_, job
     IDecode *avdecode = new FFDecode();
     avdecode->open(demux->findVParameter());
 
-    IDecode *audecode = new FFDecode();
-    audecode->open(demux->findAParameter());
+//    IDecode *audecode = new FFDecode();
+//    audecode->open(demux->findAParameter());
 
 
     demux->addObserver(avdecode);
-    demux->addObserver(audecode);
+//    demux->addObserver(audecode);
+    if (view==NULL) {
+        view = new GLVideoView();
+    }
+    avdecode->addObserver(view);
 
     demux->start();
     avdecode->start();
-    audecode->start();
+//    audecode->start();
     env->ReleaseStringUTFChars(url_, url);
+
     return result;
+}
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_eyey_medialib_MediaLib_initWindow(JNIEnv *env, jclass type, jobject surface) {
+
+    ANativeWindow *window = ANativeWindow_fromSurface(env, surface);
+    if (view == NULL) {
+        view = new GLVideoView();
+    }
+    view->setRenderer(window);
+
 }
